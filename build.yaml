@@ -1,0 +1,24 @@
+builders:
+  preflight:
+    import: 'package:event_dispatcher_builder/src/builder/preflight_builder.dart'
+    builder_factories:
+      - 'runPreflight'
+    build_extensions: { '.dart': [ '.event_dispatcher_builder.preflight.json' ] }
+    build_to: cache
+    auto_apply: dependents
+
+  buildEventDispatcher:
+    import: 'package:event_dispatcher_builder/src/builder/event_dispatcher_builder.dart'
+    builder_factories:
+      - 'buildEventDispatcher'
+    build_extensions: { '.dart': [ '.event_dispatcher_builder.g.dart' ] }
+    build_to: source
+    auto_apply: dependents
+    required_inputs:
+      - '.event_dispatcher_builder.preflight.json'
+    defaults:
+      options:
+        eventDispatcherClassName: 'EventDispatcher'
+        includePackageDependencies: true
+    runs_before:
+      - catalyst_builder:preflight
