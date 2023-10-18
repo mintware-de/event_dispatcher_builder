@@ -26,6 +26,17 @@ void main() {
     expect(handler.eventTexts, equals(['foo', 'bar']));
   });
 
+  test('Async event dispatching', () async {
+    var handler = AsyncFakeHandler();
+    expect(handler.eventTexts, isEmpty);
+    eventDispatcher.addHandler(handler);
+    eventDispatcher.addHandler(FakeHandler());
+    var future = eventDispatcher.dispatch(TestEvent(name: '1'));
+    expect(handler.eventTexts, isEmpty);
+    await future;
+    expect(handler.eventTexts, equals(['1']));
+  });
+
   test('Throws a HandlerNotSupportException', () {
     expect(
       () => eventDispatcher.addHandler(InvalidHandler()),

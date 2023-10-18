@@ -7,12 +7,14 @@ import '../../symbols.dart';
 cb.Method dispatchTemplate() {
   var subscription$ = cb.refer('subscription');
   var tT = cb.refer('T');
+  var vResult = cb.refer('result');
   return cb.Method((m) {
     m
       ..annotations.add(overrideA)
       ..name = dispatch$.symbol
       ..types.add(tT)
-      ..returns = voidT
+      ..returns = futureOfVoidT
+      ..modifier = cb.MethodModifier.async
       ..requiredParameters.add(cb.Parameter(
         (p) => p
           ..type = tT
@@ -27,7 +29,8 @@ cb.Method dispatchTemplate() {
           cb.Code(' in '),
           subscriptions$[tT].code,
           cb.Code('!) {'),
-          subscription$.call([eventP]).statement,
+          initVar(vResult, subscription$.call([eventP])),
+          IfBuilder(vResult.isA(futureT)).then(vResult.awaited).code,
           cb.Code('}'),
         ])
       ]);

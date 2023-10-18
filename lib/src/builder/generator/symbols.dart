@@ -67,3 +67,9 @@ final overrideA = cb.refer('override');
 
 /// List of dynamic
 final listOfDynamicT = cb.refer('List<dynamic>');
+
+/// Future-void
+final futureOfVoidT = cb.refer('Future<void>', 'dart:async');
+
+/// Future-void
+final futureT = cb.refer('Future', 'dart:async');

@@ -7,6 +7,7 @@ import 'example.event_dispatcher_builder.g.dart';
 
 export 'example.event_dispatcher_builder.g.dart';
 export 'src/fake_handler.dart';
+export 'src/async_fake_handler.dart';
 export 'src/test_event.dart';
 
 @GenerateEventDispatcher()
