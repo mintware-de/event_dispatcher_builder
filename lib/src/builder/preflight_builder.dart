@@ -87,9 +87,8 @@ class PreflightBuilder implements Builder {
 
   bool _isLibraryAnnotation(ElementAnnotation annotation, String name) {
     return annotation.element != null &&
-        (annotation.element!.library?.source.uri
-                .toString()
-                .startsWith('package:event_dispatcher_builder/src/annotation/') ??
+        (annotation.element!.library?.source.uri.toString().startsWith(
+                'package:event_dispatcher_builder/src/annotation/') ??
             false) &&
         annotation.element?.enclosingElement?.name == name;
   }

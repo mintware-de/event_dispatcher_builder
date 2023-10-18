@@ -21,7 +21,8 @@ class ServiceProviderBuilder implements Builder {
   ServiceProviderBuilder(this.config);
 
   AssetId _outputAsset(BuildStep buildStep) {
-    return buildStep.inputId.changeExtension('.event_dispatcher_builder.g.dart');
+    return buildStep.inputId
+        .changeExtension('.event_dispatcher_builder.g.dart');
   }
 
   @override
@@ -82,9 +83,8 @@ $rawOutput
 
   bool _isLibraryAnnotation(ElementAnnotation annotation, String name) {
     return annotation.element != null &&
-        (annotation.element!.library?.source.uri
-                .toString()
-                .startsWith('package:event_dispatcher_builder/src/annotation/') ??
+        (annotation.element!.library?.source.uri.toString().startsWith(
+                'package:event_dispatcher_builder/src/annotation/') ??
             false) &&
         annotation.element?.enclosingElement?.name == name;
   }

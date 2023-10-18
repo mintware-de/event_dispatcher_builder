@@ -1,7 +1,8 @@
 import 'package:code_builder/code_builder.dart' as cb;
 
 /// The event_dispatcher_builder root package.
-final rootPackage = 'package:event_dispatcher_builder/event_dispatcher_builder.dart';
+final rootPackage =
+    'package:event_dispatcher_builder/event_dispatcher_builder.dart';
 
 /// HandlerDescriptor type
 final handlerDescriptorT = cb.refer('HandlerDescriptor', rootPackage);
