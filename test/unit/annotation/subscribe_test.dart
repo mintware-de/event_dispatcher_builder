@@ -5,5 +5,6 @@ void main() {
   test('exists', () {
     const annotation = Subscribe();
     expect(annotation, TypeMatcher<Subscribe>());
+    expect(annotation.priority, equals(10));
   });
 }

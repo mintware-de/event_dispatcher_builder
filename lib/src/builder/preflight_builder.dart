@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:event_dispatcher_builder/src/builder/generator/symbols.dart';
 
 import 'dto/dto.dart';
 
@@ -54,6 +55,7 @@ class PreflightBuilder implements Builder {
           if (m.parameters.length != 1) {
             throw Exception('A Subscriber must have exactly 1 parameter.');
           }
+          var subscriberAnnotation = annotation.computeConstantValue();
 
           var firstParameter = m.parameters.first;
           extractedSubscribers.add(ExtractedSubscriber(
@@ -66,6 +68,8 @@ class PreflightBuilder implements Builder {
               symbolName: m.name,
               library: m.librarySource.uri.toString(),
             ),
+            priority:
+                subscriberAnnotation?.getField(priority$.symbol!)?.toIntValue() ?? 10,
           ));
         }
       }

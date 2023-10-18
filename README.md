@@ -106,33 +106,32 @@ void main() {
 That's it 🙌
 
 ## Automating the addHandler stuff
+
 In large projects it can be tedious to manage all the addHandler stuff. Especially if the event handlers require
 additional services.
 
 To optimize this, you can install the [catalyst_builder](https://pub.dev/packages/catalyst_builder) package which
- generates a dependency injection container.
+generates a dependency injection container.
 
-After installing and configuring it, you can create a `HandlerRegistry` class which is preloaded and add all this kind of code from above:
+After installing and configuring it, you can create a `HandlerRegistry` class which is preloaded and add all this kind
+of code from above:
 
 ```dart
 @Service()
 @Preload()
 class HandlerRegistry {
 
-  HandlerRegistry(
-    EventDispatcher dispatcher,
-    @Inject(tag: #eventListener) List<Object> listeners,
-  ) {
-
+  HandlerRegistry(EventDispatcher dispatcher,
+      @Inject(tag: #eventListener) List<Object> listeners,) {
     for (var listener in listeners) {
       dispatcher.addHandler(listener, listener.runtimeType);
     }
-
   }
 }
 ```
 
 Your event subscriber classes need an additional annotation:
+
 ```dart
 @Service(tags: [#eventListener]) // new
 class FakeHandler {
@@ -146,6 +145,7 @@ class FakeHandler {
 ```
 
 Finally, you need to update the `main` annotations:
+
 ```dart
 @GenerateEventDispatcher()
 // New
@@ -172,3 +172,42 @@ void main(List<String> arguments) {
 }
 ```
 
+## Features
+
+### Priority
+
+You can specify the priority of a specific handler by setting the priority field of the `@Subscribe` annotation to an
+integer value. The default priority is 10. The handlers are executed in the order of the priority from low to high.
+
+```dart
+@Service(tags: [#eventListener])
+class Handler {
+  @Subscribe(priority: 20)
+  void onTestEvent1(TestEvent event) {
+    print('onTestEvent1 (20)');
+  }
+
+  @Subscribe()
+  void onTestEvent2(TestEvent event) {
+    print('onTestEvent2 (default: 10)');
+  }
+  
+  @Subscribe(priority: 30)
+  void onTestEvent3(TestEvent event) {
+    print('onTestEvent3 (30)');
+  }
+
+  @Subscribe(priority: -10)
+  void onTestEvent4(TestEvent event) {
+    print('onTestEvent4 (-10)');
+  }
+}
+
+/*
+ * Dispatching a TestEvent will output:
+ * onTestEvent4 (-10)
+ * onTestEvent2 (default: 10)
+ * onTestEvent1 (20)
+ * onTestEvent3 (30)
+ */
+```

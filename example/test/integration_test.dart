@@ -1,6 +1,7 @@
 import 'package:event_dispatcher_builder/event_dispatcher_builder.dart';
-import 'package:test/test.dart';
 import 'package:event_dispatcher_builder_example/example.dart';
+import 'package:event_dispatcher_builder_example/src/priorized_event.dart';
+import 'package:test/test.dart';
 
 class InvalidHandler {}
 
@@ -35,6 +36,15 @@ void main() {
     expect(handler.eventTexts, isEmpty);
     await future;
     expect(handler.eventTexts, equals(['1']));
+  });
+
+  test('Priority', () async {
+    eventDispatcher.addHandler(FakeHandler());
+    eventDispatcher.addHandler(AsyncFakeHandler());
+
+    var priorityEvent = PriorityEvent();
+    await eventDispatcher.dispatch(priorityEvent);
+    expect(priorityEvent.data, equals('async fake handler'));
   });
 
   test('Throws a HandlerNotSupportException', () {

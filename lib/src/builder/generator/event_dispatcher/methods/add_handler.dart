@@ -77,9 +77,30 @@ cb.Method addHandlerTemplate() {
                 .call([handlerP]))
             .statement,
         subscriptions$[factory$.property(eventType$.symbol!)]
-            .nullSafeProperty('add')
-            .call([subscription$]).statement,
+            .nullSafeProperty('.add')
+            .call([subscription$])
+            .cascade('cast')
+            .call([], {}, [subscriptionT])
+            .property('sort')
+            .call([_buildSortHandlerLambda()])
+            .statement,
         cb.Code('}'),
       ]);
   });
+}
+
+cb.Expression _buildSortHandlerLambda() {
+  return cb.Method(
+    (m) => m
+      ..lambda = true
+      ..requiredParameters.addAll([
+        cb.Parameter((p) => p.name = 'a'),
+        cb.Parameter((p) => p.name = 'b')
+      ])
+      ..body = cb
+          .refer('a')
+          .property(priority$.symbol!)
+          .operatorSubstract(cb.refer('b').property(priority$.symbol!))
+          .code,
+  ).closure;
 }

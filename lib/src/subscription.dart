@@ -1,5 +1,15 @@
+import 'dart:async';
+
 /// Represents a Subscription for a event
-typedef Subscription<T> = void Function(T eventType);
+class Subscription<T> {
+  final int priority;
+  final FutureOr<void> Function(T eventType) notify;
+
+  Subscription({
+    required this.notify,
+    this.priority = 10,
+  });
+}
 
 /// The subscription factory is used for creating subscriptions for a specific
 /// event at runtime.

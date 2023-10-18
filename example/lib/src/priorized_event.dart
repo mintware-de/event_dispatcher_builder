@@ -1,0 +1,3 @@
+class PriorityEvent {
+  String data = '';
+}

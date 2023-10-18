@@ -29,7 +29,7 @@ cb.Method dispatchTemplate() {
           cb.Code(' in '),
           subscriptions$[tT].code,
           cb.Code('!) {'),
-          initVar(vResult, subscription$.call([eventP])),
+          initVar(vResult, subscription$.property('notify').call([eventP])),
           IfBuilder(vResult.isA(futureT)).then(vResult.awaited).code,
           cb.Code('}'),
         ])

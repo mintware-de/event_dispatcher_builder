@@ -73,3 +73,6 @@ final futureOfVoidT = cb.refer('Future<void>', 'dart:async');
 
 /// Future-void
 final futureT = cb.refer('Future', 'dart:async');
+
+/// Subscription.priority
+final priority$ = cb.refer('priority');

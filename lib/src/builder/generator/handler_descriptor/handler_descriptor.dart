@@ -25,7 +25,10 @@ cb.Expression handlerDescriptorTemplate(
             (m) => m
               ..lambda = true
               ..requiredParameters.add(cb.Parameter((p) => p.name = hT.symbol!))
-              ..body = hT.property(subscriber$.symbol!).code,
+              ..body = subscriptionT.call([], {
+                'notify': hT.property(subscriber$.symbol!),
+                if (e.priority != 10) priority$.symbol!: cb.literal(e.priority),
+              }).code,
           ).closure
         ], {}, [
           handler$,
