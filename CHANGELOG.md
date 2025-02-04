@@ -1,7 +1,7 @@
-## Next
+## 1.1.0
 
 Features:
-- **BREAKING**: `async` subscribers are now supported. The `EventDispatcher.dispatch` returns a future. 
+- `async` subscribers are now supported. The `EventDispatcher.dispatch` returns a future. 
 
 ## 1.0.0
 
