@@ -68,7 +68,9 @@ class ServiceProviderBuilder implements Builder {
     final rawOutput = Library((l) => l.body.addAll([
           buildEventDispatcherClass(config, handlers),
         ])).accept(emitter).toString();
-    final content = DartFormatter(languageVersion: DartFormatter.latestLanguageVersion).format('''
+    final content =
+        DartFormatter(languageVersion: DartFormatter.latestLanguageVersion)
+            .format('''
 // ignore_for_file: prefer_relative_imports, public_member_api_docs
 $rawOutput
 ''');
