@@ -68,7 +68,7 @@ class ServiceProviderBuilder implements Builder {
     final rawOutput = Library((l) => l.body.addAll([
           buildEventDispatcherClass(config, handlers),
         ])).accept(emitter).toString();
-    final content = DartFormatter().format('''
+    final content = DartFormatter(languageVersion: DartFormatter.latestLanguageVersion).format('''
 // ignore_for_file: prefer_relative_imports, public_member_api_docs
 $rawOutput
 ''');
@@ -86,7 +86,7 @@ $rawOutput
         (annotation.element!.library?.source.uri.toString().startsWith(
                 'package:event_dispatcher_builder/src/annotation/') ??
             false) &&
-        annotation.element?.enclosingElement?.name == name;
+        annotation.element?.enclosingElement3?.name == name;
   }
 }
 
