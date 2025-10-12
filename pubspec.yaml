@@ -1,22 +1,21 @@
 name: event_dispatcher_builder
 description: A event dispatcher builder for dart. Easy to use and lightweight as a feather.
-version: 1.2.0
+version: 2.0.0-dev.1
 homepage: 'https://www.mintware.de/'
 repository: 'https://github.com/mintware-de/event_dispatcher_builder'
 
 environment:
-  sdk: ">=2.17.0 <4.0.0"
+  sdk: ^3.5.0
 
 dependencies:
-  code_builder: ">=3.2.0 <5.0.0"
+  code_builder: ^4.0.0
   dart_style: '>=2.3.1 <4.0.0'
-  build: ^2.1.0
-  glob: ^2.0.1
-  path: ^1.8.0
-  analyzer: '>=5.0.0 <7.0.0'
-  build_runner_core: '>=7.1.0 <9.0.0'
+  build: ^4.0.0
+  glob: ^2.0.0
+  path: ^1.9.0
+  analyzer: ^8.0.0
 
 dev_dependencies:
-  test: ^1.21.1
-  build_runner: ^2.0.4
-  lints: ^2.1.0
+  test: ^1.26.3
+  build_runner: ^2.9.0
+  lints:

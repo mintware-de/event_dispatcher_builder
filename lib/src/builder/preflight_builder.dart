@@ -41,30 +41,30 @@ class PreflightBuilder implements Builder {
 
   Future<PreflightPart> _extractAnnotations(LibraryElement entryLib) async {
     var handlers = <ExtractedHandler>[];
-    for (var el in entryLib.topLevelElements) {
+    for (var el in entryLib.children) {
       if (el is! ClassElement) {
         continue;
       }
       var extractedSubscribers = <ExtractedSubscriber>[];
       for (var m in el.methods) {
-        for (var annotation in m.metadata) {
+        for (var annotation in m.metadata.annotations) {
           if (!_isLibraryAnnotation(annotation, 'Subscribe')) {
             continue;
           }
-          if (m.parameters.length != 1) {
+          if (m.formalParameters.length != 1) {
             throw Exception('A Subscriber must have exactly 1 parameter.');
           }
 
-          var firstParameter = m.parameters.first;
+          var firstParameter = m.formalParameters.first;
           extractedSubscribers.add(ExtractedSubscriber(
             event: SymbolReference(
               symbolName: firstParameter.type.element!.name!,
               library:
-                  firstParameter.type.element!.librarySource?.uri.toString(),
+                  firstParameter.type.element!.library?.uri.toString(),
             ),
             subscriber: SymbolReference(
-              symbolName: m.name,
-              library: m.librarySource.uri.toString(),
+              symbolName: m.displayName,
+              library: m.library.uri.toString(),
             ),
           ));
         }
@@ -73,8 +73,8 @@ class PreflightBuilder implements Builder {
         handlers.add(
           ExtractedHandler(
             reference: SymbolReference(
-              symbolName: el.name,
-              library: el.librarySource.uri.toString(),
+              symbolName: el.displayName,
+              library: el.library.uri.toString(),
             ),
             subscribers: extractedSubscribers,
           ),
@@ -87,7 +87,7 @@ class PreflightBuilder implements Builder {
 
   bool _isLibraryAnnotation(ElementAnnotation annotation, String name) {
     return annotation.element != null &&
-        (annotation.element!.library?.source.uri.toString().startsWith(
+        (annotation.element!.library?.uri.toString().startsWith(
                 'package:event_dispatcher_builder/src/annotation/') ??
             false) &&
         annotation.element?.enclosingElement?.name == name;

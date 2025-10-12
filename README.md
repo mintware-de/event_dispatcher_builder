@@ -18,21 +18,6 @@ https://pub.dev/packages/event_dispatcher_builder/install
 
 You also need to install the [build_runner](https://pub.dev/packages/build_runner/install) package.
 
-## Configuration
-
-To customize the builder, create a `build.yaml` beside your `pubsepc.yaml` with this content:
-
-```yaml
-targets:
-  $default:
-    auto_apply_builders: true
-    builders:
-      event_dispatcher_builder|buildEventDispatcher:
-        options:
-          eventDispatcherClassName: 'DefaultEventDispatcher' # class name of the event dispatcher
-          includePackageDependencies: false # True if subscribers from dependencies should be included.
-```
-
 ## Annotations
 
 ### `@Subscribe()`
