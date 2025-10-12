@@ -5,8 +5,3 @@ targets:
       event_dispatcher_builder|buildEventDispatcher:
         options:
           eventDispatcherClassName: 'MyEventDispatcher'
-          includePackageDependencies: true
-      catalyst_builder|buildServiceProvider:
-        options:
-          providerClassName: 'DefaultServiceProvider'
-          includePackageDependencies: true

@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:build_runner_core/build_runner_core.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:glob/glob.dart';
@@ -31,8 +30,8 @@ class ServiceProviderBuilder implements Builder {
       return;
     }
     var libraryElement = (await buildStep.inputLibrary);
-    var isEntrypoint = libraryElement.topLevelElements.any(
-      (el) => el.metadata.any(
+    var isEntrypoint = libraryElement.children.any(
+      (el) => el.metadata.annotations.any(
         (a) => _isLibraryAnnotation(a, 'GenerateEventDispatcher'),
       ),
     );
@@ -48,7 +47,7 @@ class ServiceProviderBuilder implements Builder {
 
     AssetReader assetReader = buildStep;
     if (config['includePackageDependencies'] == true) {
-      assetReader = FileBasedAssetReader(await PackageGraph.forThisPackage());
+      // assetReader = FileBasedAssetReader(await PackageGraph.forThisPackage());
     }
 
     await for (final input in assetReader.findAssets(preflightFiles)) {
@@ -85,10 +84,10 @@ $rawOutput
 
   bool _isLibraryAnnotation(ElementAnnotation annotation, String name) {
     return annotation.element != null &&
-        (annotation.element!.library?.source.uri.toString().startsWith(
+        (annotation.element!.library?.uri.toString().startsWith(
                 'package:event_dispatcher_builder/src/annotation/') ??
             false) &&
-        annotation.element?.enclosingElement3?.name == name;
+        annotation.element?.enclosingElement?.name == name;
   }
 }
 
