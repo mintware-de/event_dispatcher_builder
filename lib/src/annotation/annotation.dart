@@ -1,2 +1,2 @@
-export 'generate_event_dispatcher.dart';
+export 'generate_event_dispatcher_plugin.dart';
 export 'subscribe.dart';

@@ -1,4 +1,5 @@
 import 'package:event_dispatcher_builder/event_dispatcher_builder.dart';
+import 'package:event_dispatcher_builder_example/example.event_dispatcher_builder.plugin.g.dart';
 import 'package:test/test.dart';
 import 'package:event_dispatcher_builder_example/example.dart';
 
@@ -7,7 +8,8 @@ class InvalidHandler {}
 void main() {
   late EventDispatcher eventDispatcher;
   setUp(() {
-    eventDispatcher = MyEventDispatcher();
+    eventDispatcher = EventDispatcher();
+    eventDispatcher.useAppEventPlugin();
   });
 
   test('inheritance', () {

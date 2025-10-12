@@ -1,7 +1,0 @@
-targets:
-  $default:
-    auto_apply_builders: true
-    builders:
-      event_dispatcher_builder|buildEventDispatcher:
-        options:
-          eventDispatcherClassName: 'MyEventDispatcher'

@@ -7,21 +7,29 @@ import 'methods/methods.dart';
 
 /// Generates the code for the event dispatcher.
 cb.Class buildEventDispatcherClass(
-  Map<String, dynamic> config,
+  String className,
   List<ExtractedHandler> subscribers,
 ) {
   return cb.Class(
     (b) => b
-      ..name = config['eventDispatcherClassName'] as String
-      ..extend = eventDispatcherT
+      ..name = className
+      ..implements.addAll([eventDispatcherPluginT])
       ..fields.addAll([
         supportedHandlersTemplate(),
         subscriptionsTemplate(),
       ])
-      ..constructors.add(constructorTemplate(subscribers))
-      ..methods.addAll([
-        addHandlerTemplate(),
-        dispatchTemplate(),
-      ]),
+      ..methods.addAll([provideSupportedHandlersTemplate(subscribers)]),
   );
+}
+
+cb.Extension buildExtension(String pluginClassName) {
+  return cb.Extension((e) => e
+    ..name = "${pluginClassName}Extension"
+    ..on = eventDispatcherT
+    ..methods.add(cb.Method((m) => m
+      ..name = "use$pluginClassName"
+      ..returns = voidT
+      ..body = cb.Block.of([
+        applyPlugin$.call([cb.refer(pluginClassName).call([])]).statement
+      ]))));
 }

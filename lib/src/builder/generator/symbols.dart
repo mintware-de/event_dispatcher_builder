@@ -73,3 +73,15 @@ final futureOfVoidT = cb.refer('Future<void>', 'dart:async');
 
 /// Future-void
 final futureT = cb.refer('Future', 'dart:async');
+
+/// EventDispatcherPlugin type
+final eventDispatcherPluginT = cb.refer('EventDispatcherPlugin', rootPackage);
+
+cb.Reference mapOfT(cb.Reference tKey, cb.Reference tValue) =>
+    (cb.TypeReferenceBuilder()
+          ..symbol = 'Map'
+          ..types.addAll([tKey, tValue]))
+        .build();
+
+/// EventDispatcher.applyPlugin()
+final applyPlugin$ = cb.refer('applyPlugin');
