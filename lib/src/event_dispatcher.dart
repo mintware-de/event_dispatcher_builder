@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:event_dispatcher_builder/src/event_dispatcher_plugin.dart';
-
 import '../event_dispatcher_builder.dart';
 
 /// This class is the event dispatcher

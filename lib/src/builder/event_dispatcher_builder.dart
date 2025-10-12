@@ -15,11 +15,11 @@ import 'generator/event_dispatcher/event_dispatcher.dart';
 /// The ServiceProviderBuilder creates a service provider from the resulting
 /// preflight.json files.
 class ServiceProviderBuilder implements Builder {
-  /// The builder configuration.
-  final Map<String, dynamic> config;
-
-  /// Creates a new ServiceProviderBuilder.
-  ServiceProviderBuilder(this.config);
+  @override
+  Map<String, List<String>> get buildExtensions => {
+        r'$lib$': [],
+        r'.dart': [eventDispatcherPluginExtension],
+      };
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
@@ -79,21 +79,9 @@ class ServiceProviderBuilder implements Builder {
     final content =
         DartFormatter(languageVersion: DartFormatter.latestLanguageVersion)
             .format('''
-// ignore_for_file: prefer_relative_imports, public_member_api_docs
+// ignore_for_file: prefer_relative_imports, public_member_api_docs, implementation_imports
     $rawOutput
 ''');
     return content;
   }
-
-  @override
-  Map<String, List<String>> get buildExtensions => {
-        r'$lib$': [],
-        r'.dart': [eventDispatcherPluginExtension],
-      };
-}
-
-/// Builds the service provider
-Builder buildEventDispatcher(BuilderOptions options) {
-  log.info(options.config);
-  return ServiceProviderBuilder(options.config);
 }

@@ -1,5 +1,4 @@
 import 'package:code_builder/code_builder.dart' as cb;
-import 'package:event_dispatcher_builder/event_dispatcher_builder.dart';
 
 import '../../../dto/dto.dart';
 import '../../handler_descriptor/handler_descriptor.dart';
