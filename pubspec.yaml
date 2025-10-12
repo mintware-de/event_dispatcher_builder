@@ -12,10 +12,9 @@ dependencies:
   dart_style: '>=2.3.1 <4.0.0'
   build: ^4.0.0
   glob: ^2.0.0
-  path: ^1.9.0
   analyzer: ^8.0.0
 
 dev_dependencies:
-  test: ^1.26.3
-  build_runner: ^2.9.0
+  build_runner: ^2.5.0
+  test:
   lints:

@@ -48,25 +48,26 @@ class FakeHandler {
 }
 ```
 
-### `@GenerateEventDispatcher()`
+### `@GenerateEventDispatcherPlugin(pluginClassName: 'AppPlugin')`
 
-This annotation SHOULD only occur once at the entry point of your application. It is used for generating
-the output file that contains your event dispatcher.
+This annotation MUST occur once at the entry point of your application. It is used for generating
+the plugin file that contains the handlers of the event dispatcher.
 
 ## Usage
 
-After annotating your event subscriber methods with `@Subscribe` and adding the `@GenerateEventDispatcher()`
-to the `main` function, you need to run `dart run build_runner build` or ` flutter pub run build_runner build`.
+After annotating your event subscriber methods with `@Subscribe` and adding the `@GenerateEventDispatcherPlugin`
+to the `main` function, you need to run `dart run build_runner build` or ` flutter run build_runner build`.
 
-You should find a new file named `*.event_dispatcher_builder.g.dart` next to the file you added the annotation.
-> This generated file should not be version controlled.
+You should find a new file named `*.event_dispatcher_builder.plugin.g.dart` next to the file you added the annotation.
+> This generated file MAY be version controlled.
 
 Import this file and create/set up a new instance of your event dispatcher.
 
 ```dart
 void main() {
   // The class name depends on your configuration
-  var eventDispatcher = DefaultEventDispatcher();
+  var eventDispatcher = EventDispatcher();
+  eventDispatcher.useAppPlugin(); // pluginClassName, see above
 
   eventDispatcher.addHandler(FakeHandler());
 }
@@ -77,7 +78,8 @@ To dispatch events you can use the `EventDispatcher.dispatch(event)` method.
 
 ```dart
 void main() {
-  var eventDispatcher = DefaultEventDispatcher();
+  var eventDispatcher = EventDispatcher();
+  eventDispatcher.useAppPlugin(); // pluginClassName, see above
 
   eventDispatcher.addHandler(FakeHandler());
 
@@ -91,13 +93,15 @@ void main() {
 That's it 🙌
 
 ## Automating the addHandler stuff
+
 In large projects it can be tedious to manage all the addHandler stuff. Especially if the event handlers require
 additional services.
 
 To optimize this, you can install the [catalyst_builder](https://pub.dev/packages/catalyst_builder) package which
- generates a dependency injection container.
+generates a dependency injection container.
 
-After installing and configuring it, you can create a `HandlerRegistry` class which is preloaded and add all this kind of code from above:
+After installing and configuring it, you can create a `HandlerRegistry` class which is preloaded and add all this kind
+of code from above:
 
 ```dart
 @Service()
@@ -118,6 +122,7 @@ class HandlerRegistry {
 ```
 
 Your event subscriber classes need an additional annotation:
+
 ```dart
 @Service(tags: [#eventListener]) // new
 class FakeHandler {
@@ -131,24 +136,25 @@ class FakeHandler {
 ```
 
 Finally, you need to update the `main` annotations:
+
 ```dart
-@GenerateEventDispatcher()
-// New
-@GenerateServiceProvider()
-@ServiceMap(services: {
-  // Register your event dispatcher inside the service container as a EventDispatcher 
-  MyEventDispatcher: Service(
-    lifetime: ServiceLifetime.singleton,
-    exposeAs: EventDispatcher,
-  )
-})
+@GenerateEventDispatcherPlugin(pluginClassName: 'AppEventPlugin')
+@GenerateServiceContainerPlugin(pluginClassName: 'AppPlugin')
+void main() {}
+
 void main(List<String> arguments) {
   // Load the provider 
-  var provider = DefaultServiceProvider();
+  var provider = ServiceContainer();
+  provider.useAppPlugin();
+
+  // Register the event dispatcher
+  var eventDispatcher = EventDispatcher();
+  eventDispatcher.useAppEventPlugin();
+  provider.register((_) => eventDispatcher);
+
   // boot it
   provider.boot();
 
-  // get the event dispatcher
   var dispatcher = provider.resolve<EventDispatcher>();
 
   // dispatch a event
