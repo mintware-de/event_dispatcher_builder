@@ -2,7 +2,6 @@ import 'package:code_builder/code_builder.dart' as cb;
 
 import '../../dto/dto.dart';
 import '../symbols.dart';
-import 'fields/fields.dart';
 import 'methods/methods.dart';
 
 /// Generates the code for the event dispatcher.
@@ -14,10 +13,6 @@ cb.Class buildEventDispatcherClass(
     (b) => b
       ..name = className
       ..implements.addAll([eventDispatcherPluginT])
-      ..fields.addAll([
-        supportedHandlersTemplate(),
-        subscriptionsTemplate(),
-      ])
       ..methods.addAll([provideSupportedHandlersTemplate(subscribers)]),
   );
 }
