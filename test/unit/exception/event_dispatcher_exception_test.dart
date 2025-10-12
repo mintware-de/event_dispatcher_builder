@@ -3,7 +3,7 @@ import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
 class FooException extends EventDispatcherException {
-  FooException(String message) : super(message);
+  FooException(super.message);
 }
 
 void main() {

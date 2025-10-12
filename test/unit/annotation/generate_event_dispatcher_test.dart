@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('exists', () {
-    const annotation = GenerateEventDispatcher();
-    expect(annotation, TypeMatcher<GenerateEventDispatcher>());
+    const annotation = GenerateEventDispatcherPlugin(pluginClassName: 'A');
+    expect(annotation, TypeMatcher<GenerateEventDispatcherPlugin>());
   });
 }

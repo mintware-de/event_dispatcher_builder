@@ -1,11 +1,12 @@
 import 'package:code_builder/code_builder.dart' as cb;
+import 'package:event_dispatcher_builder/event_dispatcher_builder.dart';
 
 import '../../../dto/dto.dart';
 import '../../handler_descriptor/handler_descriptor.dart';
 import '../../symbols.dart';
 
-/// Template for addHandler()
-cb.Constructor constructorTemplate(List<ExtractedHandler> handlers) {
+/// Template for applyPlugin()
+cb.Method provideSupportedHandlersTemplate(List<ExtractedHandler> handlers) {
   var supportedHandlers = <cb.Reference, cb.Expression>{};
 
   for (var handler in handlers) {
@@ -17,11 +18,15 @@ cb.Constructor constructorTemplate(List<ExtractedHandler> handlers) {
     supportedHandlers[handler$] = handlerDescriptorTemplate(handler$, handler);
   }
 
-  return cb.Constructor((m) {
+  return cb.Method((m) {
+    m.returns = mapOfT(typeT, handlerDescriptorT);
+    m.name = 'provideSupportedHandlers';
+    m.annotations.add(cb.refer('override'));
     m.body = cb.Block.of([
-      supportedHandlers$.property('addAll').call([
-        cb.literalMap(supportedHandlers, typeT, handlerDescriptorT),
-      ]).statement,
+      cb
+          .literalMap(supportedHandlers, typeT, handlerDescriptorT)
+          .returned
+          .statement,
     ]);
   });
 }

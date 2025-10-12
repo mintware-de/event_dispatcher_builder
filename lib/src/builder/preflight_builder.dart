@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:event_dispatcher_builder/src/builder/generator/helpers.dart';
 
 import 'dto/dto.dart';
 
@@ -48,7 +49,7 @@ class PreflightBuilder implements Builder {
       var extractedSubscribers = <ExtractedSubscriber>[];
       for (var m in el.methods) {
         for (var annotation in m.metadata.annotations) {
-          if (!_isLibraryAnnotation(annotation, 'Subscribe')) {
+          if (!annotation.isLibraryAnnotation('Subscribe')) {
             continue;
           }
           if (m.formalParameters.length != 1) {
@@ -83,14 +84,6 @@ class PreflightBuilder implements Builder {
     }
 
     return PreflightPart(handlers: handlers);
-  }
-
-  bool _isLibraryAnnotation(ElementAnnotation annotation, String name) {
-    return annotation.element != null &&
-        (annotation.element!.library?.uri.toString().startsWith(
-                'package:event_dispatcher_builder/src/annotation/') ??
-            false) &&
-        annotation.element?.enclosingElement?.name == name;
   }
 }
 
