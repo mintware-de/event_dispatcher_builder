@@ -19,7 +19,7 @@ We made the `EventDispatcher` class concrete. You should replace the old generat
 
 ## Plugin registration
 
-Since the `dart build` command don't generate a event dispatcher itself but a EventDispatcherPlugin, you need to load
+Since the `dart build` command don't generate an event dispatcher itself but a EventDispatcherPlugin, you need to load
 the plugin by calling the `useAppPlugin()` (name depends on pluginClassName) extension method on an instance of
 EventDispatcher.
 

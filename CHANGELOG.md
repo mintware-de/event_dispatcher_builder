@@ -1,3 +1,10 @@
+## 2.0.0
+
+Dependency changes:
+- `analyzer`: `^8.0.0` ➡️ `^8.1.0`
+- `test`: `any`
+- `lints`: `>=2.0.0`
+
 ## 2.0.0-dev.1
 
 Reworked the underlying architecture. This should improve the build performance.
@@ -5,6 +12,7 @@ Reworked the underlying architecture. This should improve the build performance.
 For upgrading see [UPGRADE.md](UPGRADE.md)
 
 Dependency changes:
+- `analyzer`: `>=5.0.0 <7.0.0` ➡️ `^8.0.0`
 - `sdk`: `>=2.17.0 <4.0.0` ➡️ `^3.5.0`
 - `code_builder`: `>=3.2.0 <5.0.0` ➡️ `^4.0.0`
 - `build`: `^2.1.0` ➡️ `^4.0.0`
