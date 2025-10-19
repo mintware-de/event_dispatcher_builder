@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Fix wrong dependency constraint of `code_builder`
+
 ## 2.0.0
 
 Dependency changes:
